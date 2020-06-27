@@ -11,8 +11,8 @@ LimiteSuperior=10
 
 Opcões de COD aceitas pelo arquivo:
 
-COD=bin 
-COD=int-perm  
+COD=bin </br>
+COD=int-perm </br>  
 COD=int 
 COD=float 
 
