@@ -1,0 +1,3 @@
+COD=int-perm
+POP=8
+D=8

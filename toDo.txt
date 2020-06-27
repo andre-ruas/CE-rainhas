@@ -1,0 +1,5 @@
+
+- Adicionar threads para calcular número de colisoes de cada individuo
+- Adicionar operadores const onde fizer sentido
+- Arrumar destrutores, fazer as desalocacoes de memoria
+ 
