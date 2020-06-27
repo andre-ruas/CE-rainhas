@@ -2,28 +2,28 @@
 
 Modelo do arquivo "entrada.txt":
 
-COD=int
-POP=5
-D=5
-LimiteInferior=1
-LimiteSuperior=10
+COD=int </br>
+POP=5 </br>
+D=5  </br>
+LimiteInferior=1 </br>
+LimiteSuperior=10 </br>
 
 
 Opcões de COD aceitas pelo arquivo:
 
 COD=bin </br>
 COD=int-perm </br>  
-COD=int 
-COD=float 
+COD=int </br>
+COD=float </br>
 
 Se, COD=bin ou COD=int-perm -> Remover linhas referentes ao limite superior
 e limite inferior.
 
 Ex:
 
-COD=int-perm
-POP=8
-D=8
+COD=int-perm </br>
+POP=8 </br>
+D=8 </br>
 
 
 
