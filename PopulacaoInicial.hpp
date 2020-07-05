@@ -13,7 +13,7 @@ template <typename T>
 
 class PopulacaoInicial{
 
-    friend class Populacao;
+    friend class Arquivo;
 
     private:
 
@@ -25,7 +25,7 @@ class PopulacaoInicial{
         }
         ~PopulacaoInicial()
         {
-
+            std::cerr << "Populacao Inicial Destruida" << std::endl;
         }
 
         int** geraPopulacaoBinaria(int tamPop, int tamCromossomo)

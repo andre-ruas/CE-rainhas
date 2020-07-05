@@ -4,35 +4,26 @@
 #include <string>
 #include <iostream>
 #include <vector>
-
+#include "Individuo.hpp"
 
 class Rainhas{
 
     public:
 
-        Rainhas();
-        Rainhas(int** populacao, int dimensao);
+        Rainhas(void** matriz, int dimensao, int tamPOP);
         ~Rainhas();
 
-        std::vector<int>& getVetorColisoes();
-        void preencheVetorColisoes();
-        void showInfo();
-        void defMelhorIndividuo();
-        void defPiorIndividuo();
-
-        void showVetorColisoes();
-
-        //futuramente privada
-        int qtdColisoes(int* individuo);
+        void calcFitness();
+        void showFitnessPop();
+        void showPopulacao();
 
     private:
-        std::vector<int> vetorColisoes;
-        int** populacao;
-        int melhorIndividuo, piorIndividuo, dimensao;
-        
+
+        void geraPopulacaoInicial();
+        int** matriz;
+        int dimensao, tamPOP;
+        std::vector<Individuo*> populacao;
 };
-
-
 
 #endif
 

@@ -1,24 +1,34 @@
-#include "Populacao.hpp"
+#include "Arquivo.hpp"
 #include <fstream>
 #include <string>
 
-Populacao::Populacao()
+Arquivo::Arquivo(const std::string& arq): arq{arq}
 {
+    if (!geraPopulacao())
+    {
+        exit(1);
+    }
+    
 }
-Populacao::~Populacao()
+Arquivo::~Arquivo()
 {
     
 }
 
-void Populacao::geraPopulacao(std::string arqOriginal)
+void** Arquivo::getMatrizInicial()
+{   
+    return this->matriz;
+}
+
+
+
+bool Arquivo::geraPopulacao()
 {
-    // posteriormente fazer a extracao dos valores do arquivo em outra func privada
-    std::ifstream file(arqOriginal);
+    std::ifstream file(this->arq);
 
     if (!file)
     {
-        std::cerr << "Não foi possivel abrir o arquivo" << std::endl;
-        exit(1);
+        return false;
     }
 
     std::string arquivo;
@@ -26,6 +36,10 @@ void Populacao::geraPopulacao(std::string arqOriginal)
     std::string limite = "=";
     size_t pos = 0;
     int flag = 0;
+
+    int limiteInf_int, limiteSup_int;
+    float limiteInf_float, limiteSup_float;
+
 
     while (!file.eof())
     {
@@ -53,11 +67,15 @@ void Populacao::geraPopulacao(std::string arqOriginal)
                 arquivo.erase(0, pos + limite.length());
                 if (this->cod == "float")
                 {
-                    this->limiteInfReal = std::stoi(arquivo);
+                    //this->limiteInfReal = std::stoi(arquivo);
+
+                    limiteInf_float = std::stoi(arquivo);
                 }
                 else
                 {
-                    this->limiteInfInt = std::stoi(arquivo);
+                    //this->limiteInfInt = std::stoi(arquivo);
+
+                    limiteInf_int = std::stoi(arquivo);
                 }
             }
             else
@@ -65,11 +83,13 @@ void Populacao::geraPopulacao(std::string arqOriginal)
                 arquivo.erase(0, pos + limite.length());
                 if (this->cod == "float")
                 {
-                    this->limiteSupReal = std::stoi(arquivo);
+                    // this->limiteSupReal = std::stoi(arquivo);
+                    limiteSup_float = std::stoi(arquivo);
                 }
                 else
                 {
-                    this->limiteSupInt = std::stoi(arquivo);
+                    // this->limiteSupInt = std::stoi(arquivo);
+                    limiteSup_int = std::stoi(arquivo);
                 }
             }
         }
@@ -80,86 +100,44 @@ void Populacao::geraPopulacao(std::string arqOriginal)
     if (this->cod == "bin")
     {
         PopulacaoInicial<int>* popInicial{new PopulacaoInicial<int>};
-        this->matrizInt = popInicial->geraPopulacaoBinaria(this->tamPop, this->tamCromossomo);
+        this->matriz = (void**) popInicial->geraPopulacaoBinaria(this->tamPop, this->tamCromossomo);
         delete popInicial;
     }
     else if (this->cod == "int-perm")
     {
         PopulacaoInicial<int>* popInicial{new PopulacaoInicial<int>};
-        this->matrizInt = popInicial->geraPopulacaoPerm(this->tamPop, this->tamCromossomo);
+        this->matriz = (void**) popInicial->geraPopulacaoPerm(this->tamPop, this->tamCromossomo);
         delete popInicial;
     }
     else if (this->cod == "int")
     {
         PopulacaoInicial<int>* popInicial{new PopulacaoInicial<int>};
-        this->matrizInt = popInicial->geraPopulacao(this->tamPop, this->tamCromossomo, this->limiteInfInt, this->limiteSupInt);
+        this->matriz = (void**) popInicial->geraPopulacao(this->tamPop, this->tamCromossomo, limiteInf_int, limiteSup_int);
         delete popInicial;
     }
     else if (this->cod == "float")
     {
+        this->flagInt = 0;
         PopulacaoInicial<float>* popInicial{new PopulacaoInicial<float>};
-        this->matrizFloat = popInicial->geraPopulacao(this->tamPop, this->tamCromossomo, this->limiteInfReal, this->limiteSupReal);
+        this->matriz = (void**) popInicial->geraPopulacao(this->tamPop, this->tamCromossomo, limiteInf_float, limiteSup_float);
         delete popInicial;
     }
     else
     {
         std::cerr << "Codificacao invalida" << std::endl;
-        exit(1);
-    }
-}
-
-int** Populacao::getPopulacaoInt()
-{
-    return this->matrizInt;
-}
-float** Populacao::getPopulacaoFloat()
-{
-   return this->matrizFloat;
-}
-
-void Populacao::showPopulacao()
-{
-    if (this->matrizInt == nullptr)
-    {
-        showPopulacaoFloat();
-        return;
-    }
-    
-    for (int i = 0; i < this->tamPop ; i++)
-    {
-        std::cout << i << " - ";
-
-        for (int j = 0; j < this->tamCromossomo; j++)
-        {
-            std::cout << matrizInt[i][j] << " ";
-        }
-
-       std::cout << std::endl;     
-    }
-    
-
-}
-
-void Populacao::showPopulacaoFloat()
-{
-     for (int i = 0; i < this->tamPop ; i++)
-    {
-        for (int j = 0; j < this->tamCromossomo; j++)
-        {
-            std::cout << matrizFloat[i][j] << " ";
-        }
-
-       std::cout << std::endl;     
+        return false;
     }
 
+    return true;
 }
 
-const int Populacao::getDimensao()const
+
+const int Arquivo::getTamDNA()const
 {
     return this->tamCromossomo;
 }
 
-const int Populacao::getTamPop()const
+const int Arquivo::getTamPOP()const
 {
     return this->tamPop;
 }

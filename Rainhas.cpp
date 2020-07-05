@@ -1,103 +1,80 @@
 #include "Rainhas.hpp"
 
-Rainhas::Rainhas()
+Rainhas::Rainhas(void** matriz, int dimensao, int tamPOP)
+    :matriz{(int**) matriz}, dimensao{dimensao}, tamPOP{tamPOP}
 {
-
-}
-
-Rainhas::Rainhas(int** populacao, int dimensao)
-:populacao{populacao} , dimensao{dimensao}
-{
-
+    geraPopulacaoInicial();
 }
 
 Rainhas::~Rainhas()
 {
-
+    //desalocar as instancias de Individuo criadas.
 }
 
-void Rainhas::preencheVetorColisoes()
+void Rainhas::geraPopulacaoInicial()
 {
-    for (int i = 0; i < this->dimensao; i++)
+    // preenche vetor populacao.
+    for (int i = 0; i < this->tamPOP; i++)
     {
-        this->vetorColisoes.push_back(qtdColisoes(this->populacao[i]));
+        Individuo* rainha{new Individuo{this->matriz[i], this->dimensao}};
+        this->populacao.push_back(rainha);
     }
-}
-
-void Rainhas::showVetorColisoes()
-{
-    std::vector<int>::iterator it = this->vetorColisoes.begin();
-    for (; it != this->vetorColisoes.end(); it++)
-    {
-        std::cout << *it << " ";
-    }
-
-    std::cout << std::endl;
     
 }
 
-std::vector<int>& Rainhas::getVetorColisoes()
+void Rainhas::calcFitness()
 {
-    return this->vetorColisoes;
-}
-
-void Rainhas::showInfo()
-{
-    std::cout << "Melhor Individuo: " << this->melhorIndividuo << std::endl;
-    std::cout << "Pior Individuo: " << this->piorIndividuo << std::endl;
-}
-
-// o que tem menor numero de colisoes
-void Rainhas::defMelhorIndividuo()
-{
-    int menor = this->vetorColisoes.front();
-    int pos = 0;
-
-    for (int i = 0; i < this->dimensao; i++)
+    for (int i = 0; i < this->tamPOP; i++)
     {
-        if (this->vetorColisoes[i] < menor)
-        {
-            menor = this->vetorColisoes[i];
-            pos = i;
-        }
-            
+        this->populacao[i]->calcFitness();
+    }
+}
+
+void Rainhas::showPopulacao()
+{
+    std::vector<Individuo*> :: iterator it;
+
+    for (it = this->populacao.begin(); it != this->populacao.end(); it++)
+    { 
+        (*it)->showGenes();
     }
 
-    this->melhorIndividuo = pos;
+    std::cout << std::endl;
 }
-void Rainhas::defPiorIndividuo()
+
+void Rainhas::showFitnessPop()
 {
-    int maior = this->vetorColisoes.front();
-    int pos = 0;
+    std::vector<Individuo*> :: iterator it;
 
-    for (int i = 0; i < this->dimensao; i++)
-    {
-        if (this->vetorColisoes[i] > maior)
-        {
-            maior = this->vetorColisoes[i];
-            pos = i;
-        }
+    for (it = this->populacao.begin(); it != this->populacao.end(); it++)
+    { 
+        std::cout << (*it)->getFitness() << " ";
     }
-
-    this->piorIndividuo = pos;
+    std::cout << std::endl;
 }
+
+
+
 
 // retorna a qtd de colisoes do individuo
-int Rainhas::qtdColisoes(int *individuo)
-{
-    int colisoes = 0;
-    for (int i = 0; i < this->dimensao; i++)
-    {
-        for (int j = 0; j < this->dimensao; j++)
-        {
+// int Rainhas::qtdColisoes(int *individuo)
+// {
+//     int colisoes = 0;
+//     for (int i = 0; i < this->dimensao; i++)
+//     {
+//         for (int j = 0; j < this->dimensao; j++)
+//         {
 
-            if (abs(i-j) == abs(individuo[i] - individuo[j]) && i != j)
-            {
-                colisoes++;
-            }
-            
-        }
-        
-    }
-    return colisoes;
-}
+//             if (abs(i - j) == abs(individuo[i] - individuo[j]) && i != j)
+//             {
+//                 colisoes++;
+//             }
+//         }
+//     }
+//     return colisoes;
+// }
+
+
+
+
+
