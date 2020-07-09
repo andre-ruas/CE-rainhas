@@ -2,7 +2,7 @@ parametrosCompilacao=-Wall #-Wshadow
 
 all: rainhas
 
-rainhas: main.o Arquivo.o PopulacaoInicial.hpp Rainhas.o Individuo.o
+rainhas: main.o Arquivo.o PopulacaoInicial.hpp Rainhas.o Individuo.o 
 	g++ -o rainhas main.o Arquivo.o PopulacaoInicial.hpp Rainhas.o Individuo.o $(parametrosCompilacao) 
 
 main.o: main.cpp

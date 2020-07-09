@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <vector>
+#include <random>
+#include <time.h>
 
 class Individuo{
 
@@ -11,6 +13,9 @@ class Individuo{
             ~Individuo();
 
             void calcFitness();
+            Individuo* crossOver(Individuo* b);
+            void mutacao(float probMutacao);
+
             int getFitness();
             void showGenes();
 

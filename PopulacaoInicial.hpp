@@ -25,7 +25,7 @@ class PopulacaoInicial{
         }
         ~PopulacaoInicial()
         {
-            std::cerr << "Populacao Inicial Destruida" << std::endl;
+            // std::cerr << "Populacao Inicial Destruida" << std::endl;
         }
 
         int** geraPopulacaoBinaria(int tamPop, int tamCromossomo)
