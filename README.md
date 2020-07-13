@@ -2,15 +2,15 @@
 
 ### Modelo do arquivo "entrada.txt":
 
-COD=int </br>
-POP=5 </br>
-D=5  </br>
-LimiteInferior=1 </br>
-LimiteSuperior=10 </br>
-RUN=10 </br>    
-GEN=5 </br>
-SEL=1 </br>
-ELIT=0 </br>
+COD=int <br>
+POP=5 <br>
+D=5  <br>
+LimiteInferior=1 <br>
+LimiteSuperior=10 <br>
+RUN=10 <br>    
+GEN=5 <br>
+SEL=1 <br>
+ELIT=0 <br>
 
 <br>
 COD -> codificação <br> 
@@ -24,7 +24,7 @@ SEL -> estratégia de seleção, [1,2,3] <br>
 ELIT -> elitismo ( 0 -> false, 1-> true ) <br>
 
 ### Se, COD=bin ou COD=int-perm -> Remover linhas referentes ao limite superior e limite inferior.
-<br>
+
 Ex de codificação para inteiros permutados: <br>
 COD=int-perm </br>
 POP=8 </br>
@@ -38,16 +38,16 @@ ELIT=0 </br>
 ## Opcões de COD aceitas pelo arquivo: <br>
 Binário , inteiro permutado, inteiro, real <br>
 
-COD=bin </br>
-COD=int-perm </br>  
-COD=int </br>
-COD=float </br>
+COD=bin <br>
+COD=int-perm <br>  
+COD=int <br>
+COD=float <br>
 
 ## Opções de SEL aceitas pelo arquivo: <br>
 1 -> Roleta Sem Reposição <br>
 2 -> Torneio Estocástico. <br>
 3 -> Vizinhança Linear (anel). <br>
 
-SEL=1
-SEL=2
-SEL=3
+SEL=1<br>
+SEL=2<br>
+SEL=3<br>
