@@ -29,7 +29,7 @@ Ex de codificação para inteiros permutados: <br>
 COD=int-perm <br>
 POP=8 <br>
 D=8 <br>
-RUN=10 <br>    
+RUN=10     
 GEN=5 <br>
 SEL=1 <br>
 ELIT=0 <br>
@@ -38,7 +38,7 @@ ELIT=0 <br>
 Binário , inteiro permutado, inteiro, real <br>
 
 COD=bin <br>
-COD=int-perm <br>  
+COD=int-perm   
 COD=int <br>
 COD=float <br>
 
