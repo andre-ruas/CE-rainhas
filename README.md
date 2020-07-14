@@ -5,12 +5,12 @@
 COD=int <br>
 POP=5 <br>
 D=5  <br>
-LimiteInferior=1 <br>
-LimiteSuperior=10 <br>
 RUN=10     
 GEN=5 <br>
 SEL=1 <br>
 ELIT=0 <br>
+LimiteInferior=1 <br>
+LimiteSuperior=10 <br>
 
 ### Descrição:
 COD -> codificação <br> 
