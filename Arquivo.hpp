@@ -16,6 +16,11 @@ class Arquivo{
         const int getTamDNA()const;
         const int getTamPOP()const;
 
+        const int getNrExecucoes()const;
+        const int getNrGeracoes()const;
+        const int getSelecao()const;
+        const bool getElitismo()const;
+
 
     private:
 
@@ -25,6 +30,8 @@ class Arquivo{
         int flagInt = 1;
         std::string cod;
         void** matriz;
+        int nrExecucao, nrGeracao, selecao;
+        bool elitismo;
 };
 
 

@@ -21,7 +21,6 @@ class PopulacaoInicial{
 
         PopulacaoInicial()
         {
-            
         }
         ~PopulacaoInicial()
         {
@@ -30,7 +29,7 @@ class PopulacaoInicial{
 
         int** geraPopulacaoBinaria(int tamPop, int tamCromossomo)
         {
-
+            srand((unsigned) time(NULL));
             matriz = new int* [tamPop];
 
             for (int i = 0; i < tamPop; i++)
@@ -38,8 +37,6 @@ class PopulacaoInicial{
                 matriz[i] = new int[tamCromossomo];
             }
             
-
-            srand((unsigned) time(NULL));
 
             for (int i = 0; i < tamPop; i++)
             {
@@ -77,7 +74,6 @@ class PopulacaoInicial{
         }
         int** geraPopulacaoPerm(int tamPop, int tamCromossomo)
         {
-            
             srand((unsigned) time(NULL));
             matriz = new int* [tamPop];
 
@@ -85,7 +81,6 @@ class PopulacaoInicial{
             {
                 matriz[i] = new int[tamCromossomo];
             }
-
     
             for (int i = 0; i < tamPop; i++)
             {
@@ -93,9 +88,8 @@ class PopulacaoInicial{
                 {
                     matriz[i][j] = j;
                 } 
-                
             }
-
+            
             for (int i = 0; i < tamPop; i++)
             {
                 std::random_shuffle(matriz[i],matriz[i]+tamCromossomo);

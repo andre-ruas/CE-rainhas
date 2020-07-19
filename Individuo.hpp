@@ -16,12 +16,15 @@ class Individuo{
             Individuo* crossOver(Individuo* b);
             void mutacao(float probMutacao);
 
-            int getFitness();
+            float getFitness();
             void showGenes();
 
     private:
         std::vector<int> genes;
-        int fitness, dimensao;
+        float fitness{0};
+        int dimensao;
+
+        int colisoes{0};
 
 };
 

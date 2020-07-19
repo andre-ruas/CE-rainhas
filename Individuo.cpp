@@ -12,14 +12,14 @@ Individuo::~Individuo()
 {
 }
 
-int Individuo::getFitness()
+float Individuo::getFitness()
 {
     return this->fitness;
 }
 
 void Individuo::calcFitness()
 {
-    int valorMax;
+    float valorMax;
     int colisoes = 0;
 
     for (int i = 0; i < this->dimensao; i++)
@@ -36,7 +36,9 @@ void Individuo::calcFitness()
 
     valorMax = this->dimensao * (this->dimensao - 1);
 
-    this->fitness = valorMax - colisoes;
+    this->fitness = (valorMax - colisoes) / valorMax;
+
+    this->colisoes = colisoes;
 }
 
 void Individuo::showGenes()
@@ -46,8 +48,7 @@ void Individuo::showGenes()
     {
         std::cout << " " << *it;
     }
-
-    std::cout << std::endl;
+    std::cout << " -> F: "<< this->fitness << " C: " << this->colisoes << std::endl;
 }
 
 Individuo *Individuo::crossOver(Individuo *b)

@@ -1,3 +1,7 @@
 COD=int-perm
-POP=16
-D=16
+POP=8
+D=8
+RUN=1
+GEN=20
+SEL=3
+ELIT=1

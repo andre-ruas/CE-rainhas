@@ -1,7 +1,9 @@
 #include "Rainhas.hpp"
 
-Rainhas::Rainhas(void **matriz, int dimensao, int tamPOP)
-    : matriz{(int **)matriz}, dimensao{dimensao}, tamPOP{tamPOP}
+Rainhas::Rainhas(void **matriz, int dimensao, int tamPOP,
+                 int defSelecao, int nrExecucoes, int nrGeracoes, bool temElitismo)
+    : matriz{(int **)matriz}, dimensao{dimensao}, tamPOP{tamPOP}, defSelecao{defSelecao},
+      nrExecucoes{nrExecucoes}, nrGeracoes{nrGeracoes}, temElitismo{temElitismo}
 {
     geraPopulacaoInicial();
 }
@@ -32,109 +34,101 @@ void Rainhas::calcFitness()
 void Rainhas::showPopulacao()
 {
     std::vector<Individuo *>::iterator it;
+    int i = 0;
     for (it = this->populacao.begin(); it != this->populacao.end(); it++)
     {
+        std::cout << i << " - ";
+        i++;
         (*it)->showGenes();
-    }
-    std::cout << std::endl;
-}
-
-void Rainhas::showFitnessPop()
-{
-    std::vector<Individuo *>::iterator it;
-
-    for (it = this->populacao.begin(); it != this->populacao.end(); it++)
-    {
-        std::cout << (*it)->getFitness() << " ";
     }
     std::cout << std::endl;
 }
 
 void Rainhas::selecaoNatural()
 {
-    float maxFitness = (this->dimensao) * (this->dimensao - 1);
-    this->populacaoIntermediaria.clear(); //zera a pop intermediaria
-
-    for (int i = 0; i < (int)this->populacao.size(); i++)
-    {
-        float fitness = populacao[i]->getFitness() / maxFitness;
-         
-        int nrElementos = floor(fitness * 100); //(Método de Selecao Proporcional)
-        /* 
-            Obs:
-            Valores de fitness muito semelhantes, a inserção na populacao intermediaria
-            nao esta proporcional ao valor da fitness
-
-            int nrElementos;
-            if (populacao[i]->getFitness() > floor(maxFitness * 0.97))
-            {
-                nrElementos = floor(fitness * 500);
-            }
-            else
-            {
-                nrElementos = floor(fitness * 50);
-            }
-        */
-        for (int j = 0; j < nrElementos; j++)
-        {
-            this->populacaoIntermediaria.push_back(this->populacao[i]);
-        }
-    }
+    Selecao s1;
+    this->populacao = s1.proxGeracao(this->populacao, this->defSelecao);
+    proxGeracao();
 }
 
+//aplica crossover + mutacao
 void Rainhas::proxGeracao()
 {
     std::random_device rd;
     std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> dist(0, this->populacaoIntermediaria.size() - 1);
+    std::uniform_int_distribution<int> dist(0, this->populacao.size() - 1);
 
     for (int i = 0; i < (int)this->populacao.size(); i++)
     {
         int a = dist(mt);
         int b = dist(mt);
-        Individuo *filho{this->populacaoIntermediaria[a]->crossOver(this->populacaoIntermediaria[b])}; // crossover
+        Individuo *filho{this->populacao[a]->crossOver(this->populacao[b])}; // crossover
         filho->mutacao(probMutacao);
         this->populacao[i] = filho;
     }
-    this->nrGeracoes++;
 }
 
 void Rainhas::cicloEvolutivo()
 {
-    // chamada sem elitismo
-    this->calcFitness();
-    this->avaliacao(); 
-    this->selecaoNatural();
-    this->proxGeracao();
-
-    while (this->nrGeracoes < 1000)
+    int i = 0;
+    while (i < this->nrGeracoes)
     {
-        this->calcFitness();
-        this->showFitnessPop();
-        //this->elitismo();
-        this->avaliacao(); 
-        this->selecaoNatural();
-        this->proxGeracao();
+        calcFitness();
+        //melhorar esse if :/
+        if (this->temElitismo)
+        {
+            elitismo(); //-> remove o pior individuo e insere o melhor da geracao passada
+        }
+        avaliacao();
+        armazenaTodaPOP(); // fins visuais
+        // showPopulacao();
+        selecaoNatural();
+        //aplicar operadores genéticos.
+        i++;
     }
-
     this->graficoFitness();
 }
 
-void Rainhas::elitismo()
+void Rainhas::armazenaTodaPOP()
 {
     std::vector<Individuo *>::iterator it = this->populacao.begin();
 
-    std::vector<Individuo *>::iterator itPiorIndividuo = this->populacao.begin();
+    // remover posteriormente - guardando toda populacao para visualização
+    for (it = this->populacao.begin(); it != this->populacao.end(); it++)
+    {
+        this->allPOP.push_back(*it);
+    }
+}
+void Rainhas::elitismo()
+{
+    /*
+    Preserva o melhor indivíduo para a próxima geração
+    */
+    if (this->melhoresIndividuos.size() == 0)
+    {
+        return;
+    }
+    std::vector<Individuo *>::iterator it = this->populacao.begin();
+    this->piorIndividuo = *it;
 
     for (; it != this->populacao.end(); it++)
     {
-        if ((*it)->getFitness() < (*itPiorIndividuo)->getFitness())
+        if ((*it)->getFitness() < this->piorIndividuo->getFitness())
         {
-            itPiorIndividuo = it;
+            this->piorIndividuo = *it;
         }
     }
-    this->populacao.erase(itPiorIndividuo);
-    this->populacao.push_back(this->melhoresIndividuos.back());
+    /* trocando o pior individuo da geracao atual 
+            pelo melhor individuo da geracao anterior */
+    it = this->populacao.begin();
+    for (; it != this->populacao.end(); it++)
+    {
+        if (*it == this->piorIndividuo)
+        {
+            *it = *(this->melhoresIndividuos.end() - 1);
+            break;
+        }
+    }
 }
 
 // guarda o melhor individuo de cada iteração
@@ -159,11 +153,11 @@ void Rainhas::graficoFitness()
     std::ofstream outfile("saida.txt");
 
     std::vector<Individuo *>::iterator it = this->melhoresIndividuos.begin();
-    int i = 1;
+    // std::vector<Individuo *>::iterator it = this->allPOP.begin();
+
     for (; it != this->melhoresIndividuos.end(); it++)
     {
-        outfile << (*it)->getFitness() << std::endl;
-        i++;
+        outfile << std::fixed << std::setprecision(5) << (*it)->getFitness() << std::endl;
     }
 
     outfile.close();
@@ -172,11 +166,12 @@ void Rainhas::graficoFitness()
 
     p("set term png");
     p("set output \"resultado.png\"");
-    p("set style data line");
-    //p("set yrange [0:300]");    //ajustar de acordo com a dimensao
+    // p("set style data line");
+    p("set style data points");
+    // p("set yrange [-.5:+.5]");    //ajustar de acordo com a dimensao
     // p("set grid ytics mytics"); // draw lines for each ytics and mytics
     // p("set ytics 2");           // set the spacing for the mytics
     // p("set grid");
-//    p("plot \"./saida.txt\" title \"Problema Rainhas\" lt 7 lc rgb \"black\" w lp");
-    p("plot \"./saida.txt\" title \"Problema Rainhas\" lw 3 ");
+    //    p("plot \"./saida.txt\" title \"Problema Rainhas\" lt 7 lc rgb \"black\" w lp");
+    p("plot \"./saida.txt\" title \"Problema Maximizacao\" lw 3 pt 7 w lp");
 }
