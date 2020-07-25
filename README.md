@@ -1,14 +1,14 @@
 # CE-rainhas
 
-##Problema das 8-rainhas
+## Problema das 8-rainhas  <br>
   O objetivo do problema é dispor 8 rainhas em um tabuleiro de xadrez 8x8 de forma que nenhuma rainha ataque outra.
   
-  O problema pode ser amplificado para:
-  16 rainhas em um tabuleiro 16x16
-  32 rainhas em um tabuleiro 32x32
-  64 rainhas em um tabuleiro 64x64
-  128 rainhas em um tabuleiro 128x128
-  .. e assim por diante .. 
+  O problema pode ser amplificado para:  <br>
+  16 rainhas em um tabuleiro 16x16  <br>
+  32 rainhas em um tabuleiro 32x32  <br>
+  64 rainhas em um tabuleiro 64x64  <br>
+  128 rainhas em um tabuleiro 128x128  <br>
+  .. e assim por diante ..  <br>
   
 
 ### Modelo do arquivo "entrada.txt":
