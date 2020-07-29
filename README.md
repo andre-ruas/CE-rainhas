@@ -20,6 +20,8 @@ RUN=10
 GEN=5 <br>
 SEL=1 <br>
 ELIT=0 <br>
+CROSSOVER=0.9 <br>
+MUTACAO=0.02 <br>
 LimiteInferior=1 <br>
 LimiteSuperior=10 <br>
 
