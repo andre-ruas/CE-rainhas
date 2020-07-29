@@ -8,7 +8,7 @@
   32 rainhas em um tabuleiro 32x32  <br>
   64 rainhas em um tabuleiro 64x64  <br>
   128 rainhas em um tabuleiro 128x128  <br>
-  .. e assim por diante ..  <br>
+  
   
 
 ### Modelo do arquivo "entrada.txt":
