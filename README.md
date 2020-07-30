@@ -35,6 +35,8 @@ RUN -> número de execuções <br>
 GEN -> número de gerações <br>
 SEL -> estratégia de seleção, [1,2,3] <br>
 ELIT -> elitismo ( 0:false, 1:true ) <br>
+CROSSOVER -> probabilidade da ocorrência de crossOver <br>
+MUTACAO -> probabilidade da ocorrência de mutação <br>
 
 ### Se, COD=bin ou COD=int-perm: Remover linhas referentes ao limite superior e limite inferior.
 
